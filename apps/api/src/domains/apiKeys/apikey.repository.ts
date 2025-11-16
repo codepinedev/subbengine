@@ -1,0 +1,56 @@
+import { eq } from "drizzle-orm";
+
+import db from "@/infrastructure/database";
+import { apiKeys } from "@/infrastructure/database/schema";
+
+import type { Repository } from "../shared/interfaces";
+import type { ApiKey } from "./apikey.types";
+
+export class ApiKeyRepository implements Repository<ApiKey, string> {
+  constructor(private database = db) { }
+
+  async findById(id: string): Promise<ApiKey | null> {
+    const result = await this.database.query.apiKeys.findFirst({
+      where: eq(apiKeys.id, id),
+    });
+    return result || null;
+  }
+
+  async findMany(userId: string): Promise<ApiKey[]> {
+    return this.database.query.apiKeys.findMany({
+      where: eq(apiKeys.userId, userId),
+    });
+  }
+
+  async findByGameId(gameId: string): Promise<ApiKey[]> {
+    return this.database.query.apiKeys.findMany({
+      where: eq(apiKeys.gameId, gameId),
+    });
+  }
+
+  async create(data: Partial<ApiKey>): Promise<ApiKey> {
+    const [inserted] = await this.database
+      .insert(apiKeys)
+      .values({
+        id: data.id || crypto.randomUUID(),
+        name: data.name || "",
+        gameId: data.gameId || "",
+        userId: data.userId || "",
+      })
+      .returning();
+    return inserted;
+  }
+
+  async update(id: string, data: Partial<ApiKey>): Promise<ApiKey> {
+    const [updated] = await this.database
+      .update(apiKeys)
+      .set(data)
+      .where(eq(apiKeys.id, id))
+      .returning();
+    return updated;
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.database.delete(apiKeys).where(eq(apiKeys.id, id));
+  }
+}

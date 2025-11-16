@@ -1,0 +1,1 @@
+ALTER TABLE "apiKeys" ALTER COLUMN "expire_at" SET DEFAULT NOW() + INTERVAL '10 days';

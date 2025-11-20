@@ -14,7 +14,7 @@ const player = new Player({
 })
 
 app.get('/score/update', async (c) => {
-  const score = await player.submitScore('33c79ab7-ab65-414e-8978-e665d6a07e10', '1580ce23-ecca-446d-9d49-8aad87d59a94', 10, {
+  const score = await player.submitScore('33c79ab7-ab65-414e-8978-e665d6a07e10', '1580ce23-ecca-446d-9d49-8aad87d59a94', 100, {
     username: "",
     avatarUrl: ""
   })

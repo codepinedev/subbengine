@@ -13,6 +13,7 @@ import {
   useGetLeaderboard,
   useGetLeaderboardPlayers,
 } from '@/hooks/use-leaderboards'
+import { useSocket } from '@/hooks/use-socket'
 
 export const Route = createFileRoute('/dashboard/leaderboard/$leaderboardId/')({
   component: RouteComponent,
@@ -23,6 +24,7 @@ function RouteComponent() {
 
   if (!leaderboardId) return null
 
+  const { joinLeaderboard } = useSocket()
   const { data: players } = useGetLeaderboardPlayers(leaderboardId)
   const { data: leaderboard } = useGetLeaderboard(leaderboardId)
   const { data: gameKeys, isPending: isLoadingKeys } = useGetGameKeys(
@@ -32,6 +34,8 @@ function RouteComponent() {
   if (!players || !leaderboard) return <ContainerSpinner />
 
   const totalScore = players.data.reduce((sum, player) => sum + player.score, 0)
+
+  joinLeaderboard(leaderboardId)
 
   return (
     <div className="flex flex-col gap-6">

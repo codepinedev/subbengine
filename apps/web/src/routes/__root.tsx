@@ -10,7 +10,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="system" storageKey="app-theme">
-        <Outlet />
+          <Outlet />
         <TanStackDevtools
           config={{
             position: 'bottom-right',

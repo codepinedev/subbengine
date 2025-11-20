@@ -1,7 +1,7 @@
-import { useWebSocketContext } from '@/context/websocket-context'
+import { useSocketContext } from '@/context/websocket-context'
 
 export function Footer() {
-  const { isConnected, socket } = useWebSocketContext()
+  const { isConnected } = useSocketContext()
   const currentYear: number = new Date().getFullYear()
   const currentDate: string = new Date().toLocaleDateString('en-US', {
     month: 'long',
@@ -9,11 +9,6 @@ export function Footer() {
     year: 'numeric',
   })
 
-  if (socket) {
-    socket.onAny((eventName, ...args) => {
-      console.log('📨 Received event:', eventName, args)
-    })
-  }
 
   return (
     <footer className="border-t border-border mt-auto">

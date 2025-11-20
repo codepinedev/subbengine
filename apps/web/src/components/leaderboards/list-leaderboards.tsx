@@ -6,7 +6,6 @@ import { Spinner } from '../ui/spinner'
 import { CreateLeaderboard } from './create-leaderboard'
 import { LeaderboardCard } from './leaderboard-card'
 import { useGetLeaderboards } from '@/hooks/use-leaderboards'
-import { useGetGames } from '@/hooks/use-games'
 
 interface ListLeaderboardsProps {
   gameId?: string
@@ -16,7 +15,6 @@ export function ListLeaderboards({
   gameId,
 }: ListLeaderboardsProps): React.ReactElement {
   const { data, isPending } = useGetLeaderboards()
-  const { data: gamesData } = useGetGames()
 
   // Show prompt when no game is selected
   if (!gameId) {

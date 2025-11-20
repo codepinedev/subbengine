@@ -11,5 +11,5 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   'join:leaderboard': (leaderboardId: string) => void
-  'leave:leadeboard': (leaderboardId: string) => void
+  'leave:leaderboard': (leaderboardId: string) => void
 }

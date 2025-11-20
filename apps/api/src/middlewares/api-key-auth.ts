@@ -68,7 +68,7 @@ export function createApiKeyAuthMiddleware(apiKeyService: ApiKeyService) {
     c.set("gameId", key.gameId);
 
     apiKeyService.updateLastUsed(apiKey).catch(console.error);
-
+    apiKeyService.logApiKey(apiKey).catch(console.error);
     return next();
   };
 }

@@ -4,7 +4,7 @@ import type { ApiKeyRepository } from "./api-key.repository";
 import type { ApiKey, CreateApiKeyRequest } from "./api-key.types";
 
 export class ApiKeyService {
-  constructor(private apiKeyRepository: ApiKeyRepository) { }
+  constructor(private apiKeyRepository: ApiKeyRepository) {}
 
   async createApiKey(data: CreateApiKeyRequest): Promise<ApiKey> {
     const apiKeyValue = this.generateApiKey(data.name);
@@ -48,6 +48,9 @@ export class ApiKeyService {
     return this.apiKeyRepository.update(id, {
       lastUsedAt: new Date(),
     });
+  }
+
+  async logApiKey(id: string): Promise<ApiKey> {
   }
 
   private generateApiKey(prefix: string): string {

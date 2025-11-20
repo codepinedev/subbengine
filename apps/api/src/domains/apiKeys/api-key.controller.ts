@@ -2,13 +2,13 @@ import * as HttpStatusCodes from "stoker/http-status-codes";
 
 import type { AppRouteHandler } from "@/lib/types";
 
-import type { ApiKeyService } from "./apikey.service";
+import type { ApiKeyService } from "./api-key.service";
 import type {
   CreateApiKeyRoute,
   GetAllApiKeysRoute,
   GetApiKeysByGameRoute,
   RevokeApiKeyRoute,
-} from "./apikey.validation";
+} from "./api-key.validation";
 
 export class ApiKeyController {
   constructor(private apiKeyService: ApiKeyService) { }

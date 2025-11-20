@@ -1,7 +1,7 @@
 import { ApiKeyStatus } from "@/lib/utils";
 
-import type { ApiKeyRepository } from "./apikey.repository";
-import type { ApiKey, CreateApiKeyRequest } from "./apikey.types";
+import type { ApiKeyRepository } from "./api-key.repository";
+import type { ApiKey, CreateApiKeyRequest } from "./api-key.types";
 
 export class ApiKeyService {
   constructor(private apiKeyRepository: ApiKeyRepository) { }

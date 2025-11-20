@@ -1,4 +1,4 @@
-import type { ApiKeyService } from "../apiKeys/apikey.service";
+import type { ApiKeyService } from "../apiKeys/api-key.service";
 import type { CacheService, QueueService } from "../shared/interfaces";
 import type { GamesRepository } from "./games.repository";
 

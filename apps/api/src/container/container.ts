@@ -1,6 +1,6 @@
-import { ApiKeyController } from "@/domains/apiKeys/apikey.controller";
-import { ApiKeyRepository } from "@/domains/apiKeys/apikey.repository";
-import { ApiKeyService } from "@/domains/apiKeys/apikey.service";
+import { ApiKeyController } from "@/domains/apiKeys/api-key.controller";
+import { ApiKeyRepository } from "@/domains/apiKeys/api-key.repository";
+import { ApiKeyService } from "@/domains/apiKeys/api-key.service";
 import { GamesController, GameService, GamesRepository } from "@/domains/games";
 import { HealthService } from "@/domains/health";
 import { HealthController } from "@/domains/health/health.controller";

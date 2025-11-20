@@ -59,14 +59,14 @@ export const useSocket = () => {
   const joinLeaderboard = (leaderboardId: string) => {
     if (socketRef.current?.connected) {
       socketRef.current.emit('join:leaderboard', leaderboardId)
-      console.log('📊 Joined leaderboard:', leaderboardId)
+      console.log('Joined leaderboard:', leaderboardId)
     }
   }
 
   const leaveLeaderboard = (leaderboardId: string) => {
     if (socketRef.current?.connected) {
       socketRef.current.emit('leave:leaderboard', leaderboardId)
-      console.log('👋 Left leaderboard:', leaderboardId)
+      console.log('Left leaderboard:', leaderboardId)
     }
   }
 

@@ -3,7 +3,7 @@ import type { Logger } from "pino";
 
 import type { auth } from "@/lib/auth";
 
-import type { ApiKey } from "../apiKeys/apikey.types";
+import type { ApiKey } from "../apiKeys/api-key.types";
 
 export interface AppBindings {
   Variables: {

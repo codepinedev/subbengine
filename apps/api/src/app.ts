@@ -1,7 +1,7 @@
 import { container } from "@/container/container";
 import indexRoute from "@/domains/index.routes";
 
-import { createApiKeyRoutes } from "./domains/apiKeys/apikey.routes";
+import { createApiKeyRoutes } from "./domains/apiKeys/api-key.routes";
 import { createGamesRoutes } from "./domains/games";
 import { createHealthRoutes } from "./domains/health";
 import { createLeaderboardRoutes } from "./domains/leaderboards";

@@ -1,7 +1,7 @@
 import type { Context, Next } from "hono";
 
-import type { ApiKeyService } from "@/domains/apiKeys/apikey.service";
-import type { ApiKey } from "@/domains/apiKeys/apikey.types";
+import type { ApiKeyService } from "@/domains/apiKeys/api-key.service";
+import type { ApiKey } from "@/domains/apiKeys/api-key.types";
 
 import { ApiKeyStatus } from "@/lib/utils";
 

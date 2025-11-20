@@ -1,13 +1,13 @@
 import { createRouter } from "@/lib/create-app";
 
-import type { ApiKeyController } from "./apikey.controller";
+import type { ApiKeyController } from "./api-key.controller";
 
 import {
   createApiKeyRoute,
   getAllApiKeysRoute,
   getApiKeysByGameRoute,
   revokeApiKeyRoute,
-} from "./apikey.validation";
+} from "./api-key.validation";
 
 export function createApiKeyRoutes(apiKeyController: ApiKeyController) {
   return createRouter()

@@ -309,3 +309,11 @@ export const updateApiKeysSchema = createInsertSchema(apiKeys).omit({
   id: true,
   gameId: true,
 });
+
+export const selectApiKeyLogsSchema = createSelectSchema(apiKeyLogs);
+export const insertApiKeyLogSchema = createInsertSchema(apiKeyLogs).omit({
+  createdAt: true,
+  updatedAt: true,
+  expireAt: true,
+  id: true,
+});

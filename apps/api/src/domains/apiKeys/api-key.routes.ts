@@ -4,6 +4,7 @@ import type { ApiKeyController } from "./api-key.controller";
 
 import {
   createApiKeyRoute,
+  getAllApiKeyLogsRoute,
   getAllApiKeysRoute,
   getApiKeysByGameRoute,
   revokeApiKeyRoute,
@@ -14,5 +15,6 @@ export function createApiKeyRoutes(apiKeyController: ApiKeyController) {
     .openapi(createApiKeyRoute, apiKeyController.create)
     .openapi(getAllApiKeysRoute, apiKeyController.listAll)
     .openapi(getApiKeysByGameRoute, apiKeyController.listByGame)
+    .openapi(getAllApiKeyLogsRoute, apiKeyController.listAllApiKeyLogs)
     .openapi(revokeApiKeyRoute, apiKeyController.revoke);
 }

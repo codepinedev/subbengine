@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import {
   insertApiKeysSchema,
+  selectApiKeyLogsSchema,
   selectApiKeysSchema,
 } from "@/infrastructure/database/schema";
 
@@ -63,8 +64,26 @@ export const getAllApiKeysRoute = createRoute({
   },
 });
 
+export const getAllApiKeyLogsRoute = createRoute({
+  tags: ["API Keys"],
+  method: "get",
+  path: "/api-keys/{id}/logs",
+  request: {
+    params: z.object({
+      id: z.string(),
+    }),
+  },
+  responses: {
+    [HttpStatusCodes.OK]: jsonContent(
+      z.array(selectApiKeyLogsSchema),
+      "All API Key Logs",
+    ),
+  },
+});
+
 // Export route types
 export type CreateApiKeyRoute = typeof createApiKeyRoute;
 export type GetApiKeysByGameRoute = typeof getApiKeysByGameRoute;
 export type RevokeApiKeyRoute = typeof revokeApiKeyRoute;
 export type GetAllApiKeysRoute = typeof getAllApiKeysRoute;
+export type GetAllApiKeyLogsRoute = typeof getAllApiKeyLogsRoute;

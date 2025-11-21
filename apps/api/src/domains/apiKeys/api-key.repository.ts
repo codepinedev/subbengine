@@ -1,10 +1,10 @@
 import { eq } from "drizzle-orm";
 
 import db from "@/infrastructure/database";
-import { apiKeys } from "@/infrastructure/database/schema";
+import { apiKeyLogs, apiKeys } from "@/infrastructure/database/schema";
 
 import type { Repository } from "../shared/interfaces";
-import type { ApiKey } from "./api-key.types";
+import type { ApiKey, ApiKeyLog, ApiKeyLogRequest } from "./api-key.types";
 
 export class ApiKeyRepository implements Repository<ApiKey, string> {
   constructor(private database = db) {}
@@ -60,5 +60,21 @@ export class ApiKeyRepository implements Repository<ApiKey, string> {
 
   async delete(id: string): Promise<void> {
     await this.database.delete(apiKeys).where(eq(apiKeys.id, id));
+  }
+
+  async getLogs(id: string): Promise<Array<ApiKeyLog>> {
+    return await this.database.query.apiKeyLogs.findMany({ where: eq(apiKeyLogs.apiKeyId, id) });
+  }
+
+  async logApiKey(data: ApiKeyLogRequest): Promise<ApiKeyLog> {
+    const [inserted] = await this.database
+      .insert(apiKeyLogs)
+      .values(data)
+      .returning();
+
+    if (!inserted)
+      throw new Error(`Failed to insert a new key log`);
+
+    return inserted;
   }
 }

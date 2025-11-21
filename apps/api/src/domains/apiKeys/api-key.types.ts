@@ -23,7 +23,8 @@ export interface ApiKeyLog {
   apiKeyId: string;
   endpoint: string | null;
   method: string | null;
-  statusCode: string | null;
+  statusCode: number | null;
+  responseTime: number | null;
   ipAddress: string | null;
   userAgent: string | null;
   errorMessage: string | null;
@@ -33,7 +34,7 @@ export interface ApiKeyLog {
 
 export interface ApiKeyLogRequest {
   apiKeyId: string;
-  statusCode?: string;
+  statusCode?: number;
   endpoint: string | null;
   method?: string;
   ipAddress?: string;

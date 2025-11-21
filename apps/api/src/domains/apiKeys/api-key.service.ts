@@ -1,7 +1,7 @@
 import { ApiKeyStatus } from "@/lib/utils";
 
 import type { ApiKeyRepository } from "./api-key.repository";
-import type { ApiKey, CreateApiKeyRequest } from "./api-key.types";
+import type { ApiKey, ApiKeyLog, ApiKeyLogRequest, CreateApiKeyRequest } from "./api-key.types";
 
 export class ApiKeyService {
   constructor(private apiKeyRepository: ApiKeyRepository) {}
@@ -50,7 +50,12 @@ export class ApiKeyService {
     });
   }
 
-  async logApiKey(id: string): Promise<ApiKey> {
+  async logApiKey(data: ApiKeyLogRequest): Promise<ApiKeyLog> {
+    return this.apiKeyRepository.logApiKey(data);
+  }
+
+  async getApiKeyLogs(id: string): Promise<ApiKeyLog[]> {
+    return this.apiKeyRepository.getLogs(id);
   }
 
   private generateApiKey(prefix: string): string {

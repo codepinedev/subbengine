@@ -1,7 +1,7 @@
 import type { Context, Next } from "hono";
 
 import type { ApiKeyService } from "@/domains/apiKeys/api-key.service";
-import type { ApiKey } from "@/domains/apiKeys/api-key.types";
+import type { ApiKey, ApiKeyLogRequest } from "@/domains/apiKeys/api-key.types";
 
 import { ApiKeyStatus } from "@/lib/utils";
 
@@ -67,8 +67,11 @@ export function createApiKeyAuthMiddleware(apiKeyService: ApiKeyService) {
     c.set("apiKey", key);
     c.set("gameId", key.gameId);
 
+    const newLog: ApiKeyLogRequest = { apiKeyId: key.id, endpoint: c.req.url, method: c.req.method, ipAddress: c.env.incoming.socket.remoteAddress };
+
     apiKeyService.updateLastUsed(apiKey).catch(console.error);
-    apiKeyService.logApiKey(apiKey).catch(console.error);
+    apiKeyService.logApiKey(newLog).catch(console.error);
+
     return next();
   };
 }

@@ -5,6 +5,7 @@ import type { AppRouteHandler } from "@/lib/types";
 import type { ApiKeyService } from "./api-key.service";
 import type {
   CreateApiKeyRoute,
+  GetAllApiKeyLogsRoute,
   GetAllApiKeysRoute,
   GetApiKeysByGameRoute,
   RevokeApiKeyRoute,
@@ -65,5 +66,13 @@ export class ApiKeyController {
     const apiKeys = await this.apiKeyService.getAllApiKeys(userId);
 
     return c.json(apiKeys, HttpStatusCodes.OK);
+  };
+
+  listAllApiKeyLogs: AppRouteHandler<GetAllApiKeyLogsRoute> = async (c) => {
+    const { id } = c.req.valid("param");
+
+    const apiKeyLogs = await this.apiKeyService.getApiKeyLogs(id);
+
+    return c.json(apiKeyLogs, HttpStatusCodes.OK);
   };
 }

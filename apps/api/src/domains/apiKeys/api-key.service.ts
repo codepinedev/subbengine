@@ -50,6 +50,10 @@ export class ApiKeyService {
     });
   }
 
+  async getApiCallStats(userId: string) {
+    return this.apiKeyRepository.getApiKeyStatsForUser(userId);
+  }
+
   async logApiKey(data: ApiKeyLogRequest): Promise<ApiKeyLog> {
     return this.apiKeyRepository.logApiKey(data);
   }

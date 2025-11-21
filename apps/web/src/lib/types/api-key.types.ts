@@ -14,3 +14,17 @@ export interface ApiKey {
   createdAt: Date
   updatedAt: Date
 }
+
+export interface ApiKeyLog{
+  id: string;
+  apiKeyId: string;
+  endpoint: string | null;
+  method: string | null;
+  statusCode: number | null;
+  responseTime: number | null;
+  ipAddress: string | null;
+  userAgent: string | null;
+  errorMessage: string | null;
+  createdAt: Date | null;
+  updatedAt: Date;
+}

@@ -7,6 +7,7 @@ import type {
   CreateApiKeyRoute,
   GetAllApiKeyLogsRoute,
   GetAllApiKeysRoute,
+  GetApiKeyCallStatsRoute,
   GetApiKeysByGameRoute,
   RevokeApiKeyRoute,
 } from "./api-key.validation";
@@ -66,6 +67,18 @@ export class ApiKeyController {
     const apiKeys = await this.apiKeyService.getAllApiKeys(userId);
 
     return c.json(apiKeys, HttpStatusCodes.OK);
+  };
+
+  getApiCallStats: AppRouteHandler<GetApiKeyCallStatsRoute> = async (c) => {
+    const userId = c.get("session")?.userId;
+
+    if (!userId) {
+      throw new Error("User not logged in");
+    }
+
+    const stats = await this.apiKeyService.getApiCallStats(userId);
+
+    return c.json(stats, HttpStatusCodes.OK);
   };
 
   listAllApiKeyLogs: AppRouteHandler<GetAllApiKeyLogsRoute> = async (c) => {

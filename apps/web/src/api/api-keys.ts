@@ -1,5 +1,5 @@
 import { axiosInstance } from '.'
-import type { ApiKey } from '@/lib/types/api-key.types'
+import type { ApiKey, ApiKeyLog } from '@/lib/types/api-key.types'
 import type { AxiosResponse } from 'axios'
 
 const PREFIX = '/api-keys/'
@@ -17,3 +17,10 @@ export const createApiKeyEndpoint = (data: {
   gameId: string
   name: string
 }): Promise<AxiosResponse<ApiKey>> => axiosInstance.post(PREFIX, data)
+
+export const getApiKeyLogsEndpoint = (
+  id: string,
+): Promise<AxiosResponse<Array<ApiKeyLog>>> => axiosInstance.get(PREFIX + `${id}/logs`)
+
+
+export const getApiKeyCallStatsEndpoint = (): Promise<AxiosResponse<{apiCallsToday:number}>> => axiosInstance.get(PREFIX + "stats")

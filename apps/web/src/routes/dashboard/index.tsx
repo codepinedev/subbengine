@@ -7,6 +7,8 @@ import { ListGames } from '@/components/games/list-games'
 import { ListLeaderboards } from '@/components/leaderboards/list-leaderboards'
 import { Spinner } from '@/components/ui/spinner'
 import { useGetLeaderboards } from '@/hooks/use-leaderboards'
+import { useGetApiKeyCallStats } from '@/hooks/use-api-key'
+
 
 export const Route = createFileRoute('/dashboard/')({
   component: RouteComponent,
@@ -17,8 +19,8 @@ function RouteComponent() {
     undefined,
   )
   const { data, isPending } = useGetLeaderboards()
+  const {data:stats, isPending: statsPendning} = useGetApiKeyCallStats()
 
-  // Filter leaderboards by selected game if any
   const filteredLeaderboards = selectedGameId
     ? data?.data.filter((lb) => lb.game.id === selectedGameId) || []
     : data?.data || []
@@ -50,7 +52,7 @@ function RouteComponent() {
           iconColor="secondary"
           icon={Users}
         />
-        <DashboardKpiElement title="API Calls Today" value="12.5K" icon={Zap} />
+        <DashboardKpiElement title="API Calls Today" value={stats?.data.apiCallsToday.toString() ?? ''} icon={Zap} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <ListGames

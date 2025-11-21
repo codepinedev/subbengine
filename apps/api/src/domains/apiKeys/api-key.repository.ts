@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, gte, sql } from "drizzle-orm";
 
 import db from "@/infrastructure/database";
 import { apiKeyLogs, apiKeys } from "@/infrastructure/database/schema";
@@ -60,6 +60,25 @@ export class ApiKeyRepository implements Repository<ApiKey, string> {
 
   async delete(id: string): Promise<void> {
     await this.database.delete(apiKeys).where(eq(apiKeys.id, id));
+  }
+
+  async getApiKeyStatsForUser(userId: string): Promise<{ apiCallsToday: number }> {
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const result = await this.database.select({ count: sql<number>`count(*)` })
+      .from(apiKeyLogs)
+      .innerJoin(apiKeys, eq(apiKeyLogs.apiKeyId, apiKeys.id))
+      .where(
+        and(
+          eq(apiKeys.userId, userId),
+          gte(apiKeyLogs.createdAt, startOfDay),
+        ),
+      );
+
+    return {
+      apiCallsToday: Number(result[0]?.count ?? 0),
+    };
   }
 
   async getLogs(id: string): Promise<Array<ApiKeyLog>> {

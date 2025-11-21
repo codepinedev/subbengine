@@ -81,9 +81,24 @@ export const getAllApiKeyLogsRoute = createRoute({
   },
 });
 
+export const getApiKeyCallStatsRoute = createRoute({
+  tags: ["API Keys"],
+  method: "get",
+  path: "/api-keys/stats",
+  responses: {
+    [HttpStatusCodes.OK]: jsonContent(
+      z.object({
+        apiCallsToday: z.number(),
+      }),
+      "Get AP Key Stats",
+    ),
+  },
+});
+
 // Export route types
 export type CreateApiKeyRoute = typeof createApiKeyRoute;
 export type GetApiKeysByGameRoute = typeof getApiKeysByGameRoute;
 export type RevokeApiKeyRoute = typeof revokeApiKeyRoute;
 export type GetAllApiKeysRoute = typeof getAllApiKeysRoute;
 export type GetAllApiKeyLogsRoute = typeof getAllApiKeyLogsRoute;
+export type GetApiKeyCallStatsRoute = typeof getApiKeyCallStatsRoute;

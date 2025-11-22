@@ -20,8 +20,8 @@ import { Route as DashboardGamesRouteImport } from './routes/dashboard/games'
 import { Route as DashboardApiKeysRouteImport } from './routes/dashboard/api-keys'
 import { Route as LandingSignUpRouteImport } from './routes/_landing.sign-up'
 import { Route as LandingSignInRouteImport } from './routes/_landing.sign-in'
-import { Route as DashboardGamesGameIdRouteImport } from './routes/dashboard/games.$gameId'
 import { Route as DashboardLeaderboardLeaderboardIdIndexRouteImport } from './routes/dashboard/leaderboard/$leaderboardId.index'
+import { Route as DashboardGameGameIdDetailsRouteImport } from './routes/dashboard/game/$gameId.details'
 
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
@@ -77,15 +77,16 @@ const LandingSignInRoute = LandingSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => LandingRoute,
 } as any)
-const DashboardGamesGameIdRoute = DashboardGamesGameIdRouteImport.update({
-  id: '/$gameId',
-  path: '/$gameId',
-  getParentRoute: () => DashboardGamesRoute,
-} as any)
 const DashboardLeaderboardLeaderboardIdIndexRoute =
   DashboardLeaderboardLeaderboardIdIndexRouteImport.update({
     id: '/leaderboard/$leaderboardId/',
     path: '/leaderboard/$leaderboardId/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardGameGameIdDetailsRoute =
+  DashboardGameGameIdDetailsRouteImport.update({
+    id: '/game/$gameId/details',
+    path: '/game/$gameId/details',
     getParentRoute: () => DashboardRoute,
   } as any)
 
@@ -94,26 +95,26 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof LandingSignInRoute
   '/sign-up': typeof LandingSignUpRoute
   '/dashboard/api-keys': typeof DashboardApiKeysRoute
-  '/dashboard/games': typeof DashboardGamesRouteWithChildren
+  '/dashboard/games': typeof DashboardGamesRoute
   '/dashboard/leaderboards': typeof DashboardLeaderboardsRoute
   '/dashboard/players': typeof DashboardPlayersRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/': typeof LandingIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
-  '/dashboard/games/$gameId': typeof DashboardGamesGameIdRoute
+  '/dashboard/game/$gameId/details': typeof DashboardGameGameIdDetailsRoute
   '/dashboard/leaderboard/$leaderboardId': typeof DashboardLeaderboardLeaderboardIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/sign-in': typeof LandingSignInRoute
   '/sign-up': typeof LandingSignUpRoute
   '/dashboard/api-keys': typeof DashboardApiKeysRoute
-  '/dashboard/games': typeof DashboardGamesRouteWithChildren
+  '/dashboard/games': typeof DashboardGamesRoute
   '/dashboard/leaderboards': typeof DashboardLeaderboardsRoute
   '/dashboard/players': typeof DashboardPlayersRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/': typeof LandingIndexRoute
   '/dashboard': typeof DashboardIndexRoute
-  '/dashboard/games/$gameId': typeof DashboardGamesGameIdRoute
+  '/dashboard/game/$gameId/details': typeof DashboardGameGameIdDetailsRoute
   '/dashboard/leaderboard/$leaderboardId': typeof DashboardLeaderboardLeaderboardIdIndexRoute
 }
 export interface FileRoutesById {
@@ -123,13 +124,13 @@ export interface FileRoutesById {
   '/_landing/sign-in': typeof LandingSignInRoute
   '/_landing/sign-up': typeof LandingSignUpRoute
   '/dashboard/api-keys': typeof DashboardApiKeysRoute
-  '/dashboard/games': typeof DashboardGamesRouteWithChildren
+  '/dashboard/games': typeof DashboardGamesRoute
   '/dashboard/leaderboards': typeof DashboardLeaderboardsRoute
   '/dashboard/players': typeof DashboardPlayersRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/_landing/': typeof LandingIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
-  '/dashboard/games/$gameId': typeof DashboardGamesGameIdRoute
+  '/dashboard/game/$gameId/details': typeof DashboardGameGameIdDetailsRoute
   '/dashboard/leaderboard/$leaderboardId/': typeof DashboardLeaderboardLeaderboardIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -145,7 +146,7 @@ export interface FileRouteTypes {
     | '/dashboard/profile'
     | '/'
     | '/dashboard/'
-    | '/dashboard/games/$gameId'
+    | '/dashboard/game/$gameId/details'
     | '/dashboard/leaderboard/$leaderboardId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -158,7 +159,7 @@ export interface FileRouteTypes {
     | '/dashboard/profile'
     | '/'
     | '/dashboard'
-    | '/dashboard/games/$gameId'
+    | '/dashboard/game/$gameId/details'
     | '/dashboard/leaderboard/$leaderboardId'
   id:
     | '__root__'
@@ -173,7 +174,7 @@ export interface FileRouteTypes {
     | '/dashboard/profile'
     | '/_landing/'
     | '/dashboard/'
-    | '/dashboard/games/$gameId'
+    | '/dashboard/game/$gameId/details'
     | '/dashboard/leaderboard/$leaderboardId/'
   fileRoutesById: FileRoutesById
 }
@@ -261,18 +262,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LandingSignInRouteImport
       parentRoute: typeof LandingRoute
     }
-    '/dashboard/games/$gameId': {
-      id: '/dashboard/games/$gameId'
-      path: '/$gameId'
-      fullPath: '/dashboard/games/$gameId'
-      preLoaderRoute: typeof DashboardGamesGameIdRouteImport
-      parentRoute: typeof DashboardGamesRoute
-    }
     '/dashboard/leaderboard/$leaderboardId/': {
       id: '/dashboard/leaderboard/$leaderboardId/'
       path: '/leaderboard/$leaderboardId'
       fullPath: '/dashboard/leaderboard/$leaderboardId'
       preLoaderRoute: typeof DashboardLeaderboardLeaderboardIdIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/game/$gameId/details': {
+      id: '/dashboard/game/$gameId/details'
+      path: '/game/$gameId/details'
+      fullPath: '/dashboard/game/$gameId/details'
+      preLoaderRoute: typeof DashboardGameGameIdDetailsRouteImport
       parentRoute: typeof DashboardRoute
     }
   }
@@ -293,35 +294,25 @@ const LandingRouteChildren: LandingRouteChildren = {
 const LandingRouteWithChildren =
   LandingRoute._addFileChildren(LandingRouteChildren)
 
-interface DashboardGamesRouteChildren {
-  DashboardGamesGameIdRoute: typeof DashboardGamesGameIdRoute
-}
-
-const DashboardGamesRouteChildren: DashboardGamesRouteChildren = {
-  DashboardGamesGameIdRoute: DashboardGamesGameIdRoute,
-}
-
-const DashboardGamesRouteWithChildren = DashboardGamesRoute._addFileChildren(
-  DashboardGamesRouteChildren,
-)
-
 interface DashboardRouteChildren {
   DashboardApiKeysRoute: typeof DashboardApiKeysRoute
-  DashboardGamesRoute: typeof DashboardGamesRouteWithChildren
+  DashboardGamesRoute: typeof DashboardGamesRoute
   DashboardLeaderboardsRoute: typeof DashboardLeaderboardsRoute
   DashboardPlayersRoute: typeof DashboardPlayersRoute
   DashboardProfileRoute: typeof DashboardProfileRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardGameGameIdDetailsRoute: typeof DashboardGameGameIdDetailsRoute
   DashboardLeaderboardLeaderboardIdIndexRoute: typeof DashboardLeaderboardLeaderboardIdIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardApiKeysRoute: DashboardApiKeysRoute,
-  DashboardGamesRoute: DashboardGamesRouteWithChildren,
+  DashboardGamesRoute: DashboardGamesRoute,
   DashboardLeaderboardsRoute: DashboardLeaderboardsRoute,
   DashboardPlayersRoute: DashboardPlayersRoute,
   DashboardProfileRoute: DashboardProfileRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardGameGameIdDetailsRoute: DashboardGameGameIdDetailsRoute,
   DashboardLeaderboardLeaderboardIdIndexRoute:
     DashboardLeaderboardLeaderboardIdIndexRoute,
 }

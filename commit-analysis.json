@@ -1,0 +1,474 @@
+{
+  "metadata": {
+    "analyzedRepos": [
+      "leaderboard-api",
+      "leaderboard-client",
+      "current"
+    ],
+    "generatedAt": "2025-11-22T12:00:47.378Z"
+  },
+  "summary": {
+    "totalCommits": 115,
+    "dateRange": {
+      "start": "2025-09-10T07:15:37.000Z",
+      "end": "2025-11-22T11:36:49.000Z"
+    },
+    "averageCommitsPerDay": 1.55,
+    "longestStreak": 1
+  },
+  "timeOfDay": {
+    "morning": 34,
+    "day": 43,
+    "evening": 37,
+    "night": 1
+  },
+  "hourlyDistribution": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 1,
+    "5": 3,
+    "6": 14,
+    "7": 10,
+    "8": 7,
+    "9": 3,
+    "10": 3,
+    "11": 7,
+    "12": 2,
+    "13": 6,
+    "14": 14,
+    "15": 1,
+    "16": 7,
+    "17": 8,
+    "18": 3,
+    "19": 5,
+    "20": 2,
+    "21": 8,
+    "22": 8,
+    "23": 3
+  },
+  "weeklyDistribution": {
+    "Saturday": 35,
+    "Friday": 21,
+    "Thursday": 18,
+    "Tuesday": 6,
+    "Sunday": 17,
+    "Monday": 9,
+    "Wednesday": 9
+  },
+  "commitTypes": {
+    "fix": 40,
+    "refactor": 2,
+    "feat": 51,
+    "other": 18,
+    "chore": 4
+  },
+  "commitsByRepo": {
+    "current": 12,
+    "leaderboard-api": 70,
+    "leaderboard-client": 33
+  },
+  "commits": [
+    {
+      "hash": "a604d2c",
+      "date": "2025-11-22T11:36:49.000Z",
+      "message": "fix: looading stats",
+      "hour": 12,
+      "type": "fix",
+      "repo": "current"
+    },
+    {
+      "hash": "cb99548",
+      "date": "2025-11-22T11:03:10.000Z",
+      "message": "fix: loading",
+      "hour": 12,
+      "type": "fix",
+      "repo": "current"
+    },
+    {
+      "hash": "374687e",
+      "date": "2025-11-22T10:42:16.000Z",
+      "message": "refactor: code ownership refactoring",
+      "hour": 11,
+      "type": "refactor",
+      "repo": "current"
+    },
+    {
+      "hash": "2151056",
+      "date": "2025-11-22T09:11:22.000Z",
+      "message": "fix: leaderboard permissions",
+      "hour": 10,
+      "type": "fix",
+      "repo": "current"
+    },
+    {
+      "hash": "ed42a7c",
+      "date": "2025-11-22T06:46:11.000Z",
+      "message": "feat: game update backend",
+      "hour": 7,
+      "type": "feat",
+      "repo": "current"
+    },
+    {
+      "hash": "cf6852e",
+      "date": "2025-11-21T06:10:41.000Z",
+      "message": "fix: api calls today",
+      "hour": 7,
+      "type": "fix",
+      "repo": "current"
+    },
+    {
+      "hash": "c0ad703",
+      "date": "2025-11-21T05:34:34.000Z",
+      "message": "feat: added vscode settings + ApiKeyLogs",
+      "hour": 6,
+      "type": "feat",
+      "repo": "current"
+    },
+    {
+      "hash": "5d27454",
+      "date": "2025-11-20T06:00:23.000Z",
+      "message": "feat: api key logs",
+      "hour": 7,
+      "type": "feat",
+      "repo": "current"
+    },
+    {
+      "hash": "4a24e39",
+      "date": "2025-11-20T05:35:45.000Z",
+      "message": "fix: api key creation",
+      "hour": 6,
+      "type": "fix",
+      "repo": "current"
+    },
+    {
+      "hash": "ae0bc1c",
+      "date": "2025-11-20T05:26:30.000Z",
+      "message": "feat: sockets and socket registration",
+      "hour": 6,
+      "type": "feat",
+      "repo": "current"
+    },
+    {
+      "hash": "fa8be94",
+      "date": "2025-11-18T05:17:21.000Z",
+      "message": "feat: socket hook and realtime",
+      "hour": 6,
+      "type": "feat",
+      "repo": "current"
+    },
+    {
+      "hash": "74772d2",
+      "date": "2025-11-16T21:57:39.000Z",
+      "message": "initial mono repo commit",
+      "hour": 22,
+      "type": "other",
+      "repo": "current"
+    },
+    {
+      "hash": "52a111a",
+      "date": "2025-11-15T13:12:39.000Z",
+      "message": "chore: added todo",
+      "hour": 14,
+      "type": "chore",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "b2821d8",
+      "date": "2025-11-15T06:59:24.000Z",
+      "message": "fix: rest of project",
+      "hour": 7,
+      "type": "fix",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "3d65170",
+      "date": "2025-11-15T06:55:33.000Z",
+      "message": "fix: leaderboard id type",
+      "hour": 7,
+      "type": "fix",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "26e8f27",
+      "date": "2025-11-15T06:40:32.000Z",
+      "message": "Merge pull request #4 from MhemedAbderrahmen/feat/games-with-leaderboards",
+      "hour": 7,
+      "type": "other",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "8a2e673",
+      "date": "2025-11-15T06:37:51.000Z",
+      "message": "fix: leaderboard id to string",
+      "hour": 7,
+      "type": "fix",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "2a76280",
+      "date": "2025-11-10T13:49:19.000Z",
+      "message": "Merge pull request #3 from MhemedAbderrahmen/feat/games-with-leaderboards",
+      "hour": 14,
+      "type": "other",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "13b7854",
+      "date": "2025-11-10T13:46:41.000Z",
+      "message": "fix: user auth",
+      "hour": 14,
+      "type": "fix",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "5a6b222",
+      "date": "2025-11-10T13:45:35.000Z",
+      "message": "fix: user id with leader boards get all",
+      "hour": 14,
+      "type": "fix",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "6e32458",
+      "date": "2025-11-10T13:34:21.000Z",
+      "message": "fix: last used at update",
+      "hour": 14,
+      "type": "fix",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "ccc3ca7",
+      "date": "2025-11-10T13:18:04.000Z",
+      "message": "fix: leaderboard game by userid",
+      "hour": 14,
+      "type": "fix",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "69d721f",
+      "date": "2025-11-09T20:37:45.000Z",
+      "message": "fix: api keys and fetching for user data",
+      "hour": 21,
+      "type": "fix",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "4891cad",
+      "date": "2025-11-09T20:37:31.000Z",
+      "message": "fix: leaderboards",
+      "hour": 21,
+      "type": "fix",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "92e0eed",
+      "date": "2025-11-09T18:54:34.000Z",
+      "message": "chore: added commented sdk option for isntance",
+      "hour": 19,
+      "type": "chore",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "755ff1d",
+      "date": "2025-11-09T18:54:11.000Z",
+      "message": "fix: schema and added sdk apis",
+      "hour": 19,
+      "type": "fix",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "c5bc1f2",
+      "date": "2025-11-09T17:54:58.000Z",
+      "message": "fix: heeader",
+      "hour": 18,
+      "type": "fix",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "4e0fda1",
+      "date": "2025-11-09T17:54:39.000Z",
+      "message": "fix: sockets",
+      "hour": 18,
+      "type": "fix",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "02cbc26",
+      "date": "2025-11-08T22:07:05.000Z",
+      "message": "fix: socketio",
+      "hour": 23,
+      "type": "fix",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "08bb567",
+      "date": "2025-11-08T22:06:53.000Z",
+      "message": "fix: socketio",
+      "hour": 23,
+      "type": "fix",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "efe11d9",
+      "date": "2025-11-08T19:09:13.000Z",
+      "message": "fix: linter",
+      "hour": 20,
+      "type": "fix",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "ea9699b",
+      "date": "2025-11-05T18:53:50.000Z",
+      "message": "fix: styling",
+      "hour": 19,
+      "type": "fix",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "26187be",
+      "date": "2025-11-05T05:26:37.000Z",
+      "message": "api keys games and more",
+      "hour": 6,
+      "type": "other",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "b2444d2",
+      "date": "2025-11-05T05:26:28.000Z",
+      "message": "feat: get all api keys",
+      "hour": 6,
+      "type": "feat",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "9f98694",
+      "date": "2025-11-04T05:07:59.000Z",
+      "message": "feat: api keys",
+      "hour": 6,
+      "type": "feat",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "cca8120",
+      "date": "2025-11-04T05:07:46.000Z",
+      "message": "feat: api keys",
+      "hour": 6,
+      "type": "feat",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "7bff205",
+      "date": "2025-11-01T05:44:49.000Z",
+      "message": "fix: leaderboard and games creation",
+      "hour": 6,
+      "type": "fix",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "afd8ee3",
+      "date": "2025-10-31T10:00:37.000Z",
+      "message": "fix: all",
+      "hour": 11,
+      "type": "fix",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "c3ee8d0",
+      "date": "2025-10-31T09:12:56.000Z",
+      "message": "fix: games",
+      "hour": 10,
+      "type": "fix",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "46e0dbf",
+      "date": "2025-10-30T22:40:36.000Z",
+      "message": "feat: adding games",
+      "hour": 23,
+      "type": "feat",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "2b6a407",
+      "date": "2025-10-30T21:52:35.000Z",
+      "message": "feat: api key generation",
+      "hour": 22,
+      "type": "feat",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "23dcd5e",
+      "date": "2025-10-30T21:35:43.000Z",
+      "message": "feat: added api keys and updated schema",
+      "hour": 22,
+      "type": "feat",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "850c109",
+      "date": "2025-10-30T21:35:24.000Z",
+      "message": "chore: refactor domains",
+      "hour": 22,
+      "type": "chore",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "0cf6f12",
+      "date": "2025-10-27T05:26:21.000Z",
+      "message": "feat: games api keys",
+      "hour": 6,
+      "type": "feat",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "b894ad7",
+      "date": "2025-10-25T07:56:41.000Z",
+      "message": "feat: added leaderboards with games",
+      "hour": 8,
+      "type": "feat",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "4bcf19b",
+      "date": "2025-10-24T06:02:00.000Z",
+      "message": "feat:  update player score polish",
+      "hour": 7,
+      "type": "feat",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "5893105",
+      "date": "2025-10-24T06:01:34.000Z",
+      "message": "fix: build errors",
+      "hour": 7,
+      "type": "fix",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "1a38f2b",
+      "date": "2025-10-24T05:44:39.000Z",
+      "message": "refactor: schema attempt to refactor",
+      "hour": 6,
+      "type": "refactor",
+      "repo": "leaderboard-api"
+    },
+    {
+      "hash": "c903372",
+      "date": "2025-10-23T07:27:29.000Z",
+      "message": "feat: score update",
+      "hour": 8,
+      "type": "feat",
+      "repo": "leaderboard-client"
+    },
+    {
+      "hash": "4bcadaf",
+      "date": "2025-10-22T05:26:24.000Z",
+      "message": "chore: refactoring and clean up as well as context prep",
+      "hour": 6,
+      "type": "chore",
+      "repo": "leaderboard-client"
+    }
+  ]
+}

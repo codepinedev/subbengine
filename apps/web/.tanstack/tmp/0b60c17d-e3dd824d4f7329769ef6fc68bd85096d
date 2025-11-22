@@ -1,0 +1,172 @@
+import { Link, createFileRoute } from '@tanstack/react-router'
+import { ArrowLeft, Gamepad2, Key, Trophy, Users } from 'lucide-react'
+import { DashboardKpiElement } from '@/components/dashboard/dashboard-kpi-element'
+import { EmptyComponent } from '@/components/empty-component'
+import { CreateLeaderboard } from '@/components/leaderboards/create-leaderboard'
+import { GameApiKeys } from '@/components/leaderboards/game-api-keys'
+import { LeaderboardCard } from '@/components/leaderboards/leaderboard-card'
+import { EditGameDialog } from '@/components/games/edit-game'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ContainerSpinner } from '@/components/ui/spinner'
+import { Badge } from '@/components/ui/badge'
+import { useGetGameKeys } from '@/hooks/use-api-key'
+import { useGetGames } from '@/hooks/use-games'
+import { useGetLeaderboards } from '@/hooks/use-leaderboards'
+
+export const Route = createFileRoute('/dashboard/games/$gameId/details')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  const { gameId } = Route.useParams()
+  const { data: gamesData, isPending: gamesLoading } = useGetGames()
+  const { data: leaderboardsData, isPending: leaderboardsLoading } =
+    useGetLeaderboards()
+  const { data: gameKeys, isPending: keysLoading } = useGetGameKeys(gameId)
+
+  if (gamesLoading || leaderboardsLoading || keysLoading) {
+    return <ContainerSpinner />
+  }
+
+  const game = gamesData?.data.find((g) => g.id === gameId)
+
+  if (!game) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 gap-4">
+        <p className="text-muted-foreground">Game not found</p>
+        <Link to="/dashboard/games">
+          <Button variant="outline">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Games
+          </Button>
+        </Link>
+      </div>
+    )
+  }
+
+  const gameLeaderboards =
+    leaderboardsData?.data.filter((lb) => lb.game.id === gameId) || []
+
+  const totalPlayers = gameLeaderboards.reduce(
+    (acc, lb) => acc + (lb.playerCount || 0),
+    0,
+  )
+
+  const activeKeys = game.apiKeys.filter(key => key.status === 'enabled')
+
+  return (
+    <div className="flex flex-col gap-6 max-w-6xl">
+      {/* Header Section */}
+      <div className="flex items-start gap-4">
+        <Link to="/dashboard/games">
+          <Button variant="ghost" size="icon" className="mt-1">
+            <ArrowLeft className="w-4 h-4" />
+          </Button>
+        </Link>
+        <div className="flex items-start gap-4 flex-1">
+          <span className="text-5xl">{game.icon}</span>
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-1">
+              <h1 className="text-2xl font-bold">{game.name}</h1>
+              <EditGameDialog game={game} />
+            </div>
+            <p className="text-sm text-muted-foreground mb-2">
+              {game.description}
+            </p>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Badge variant="secondary" className="text-xs">
+                ID: {game.id.slice(0, 8)}...
+              </Badge>
+              <span>•</span>
+              <span>Created {new Date(game.createdAt).toLocaleDateString()}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* KPI Section */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <DashboardKpiElement
+          title="Leaderboards"
+          value={gameLeaderboards.length}
+          icon={Trophy}
+          isPending={leaderboardsLoading}
+        />
+        <DashboardKpiElement
+          title="Total Players"
+          value={totalPlayers}
+          icon={Users}
+          iconColor="secondary"
+          isPending={leaderboardsLoading}
+        />
+        <DashboardKpiElement
+          title="API Keys"
+          value={activeKeys.length}
+          icon={Key}
+          isPending={keysLoading}
+        />
+        <DashboardKpiElement
+          title="Total Keys"
+          value={game.apiKeys.length}
+          icon={Gamepad2}
+          isPending={keysLoading}
+        />
+      </div>
+
+      {/* API Keys Section */}
+      <GameApiKeys gameKeys={gameKeys} isLoading={keysLoading} />
+
+      {/* Leaderboards Section */}
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              Leaderboards
+              <Badge variant="secondary" className="ml-1">
+                {gameLeaderboards.length}
+              </Badge>
+            </CardTitle>
+            <CreateLeaderboard preselectedGameId={gameId} />
+          </div>
+        </CardHeader>
+        <CardContent>
+          {gameLeaderboards.length > 0 ? (
+            <div className="grid grid-cols-1 gap-2">
+              {gameLeaderboards.map((leaderboard, index) => {
+                const mockIcons = [
+                  '🏆',
+                  '🎮',
+                  '⚔️',
+                  '🎯',
+                  '🔥',
+                  '⭐',
+                  '🏅',
+                  '👑',
+                  '💎',
+                  '🚀',
+                ]
+                const icon = mockIcons[index % mockIcons.length]
+                return (
+                  <LeaderboardCard
+                    key={leaderboard.id}
+                    {...leaderboard}
+                    icon={icon}
+                  />
+                )
+              })}
+            </div>
+          ) : (
+            <EmptyComponent
+              title="No Leaderboards"
+              description="Create your first leaderboard for this game."
+            >
+              <CreateLeaderboard preselectedGameId={gameId} />
+            </EmptyComponent>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

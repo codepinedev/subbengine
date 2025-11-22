@@ -19,3 +19,9 @@ export interface GameToCreate {
   description: string
   apiKeyName: string
 }
+
+export interface GameToUpdate {
+  icon?: string
+  name?: string
+  description?: string
+}

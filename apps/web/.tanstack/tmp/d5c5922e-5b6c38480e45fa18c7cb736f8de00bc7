@@ -1,19 +1,20 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { ArrowLeft, Gamepad2, Trophy, Users } from 'lucide-react'
+import { ArrowLeft, Gamepad2, Key, Trophy, Users } from 'lucide-react'
 import { DashboardKpiElement } from '@/components/dashboard/dashboard-kpi-element'
 import { EmptyComponent } from '@/components/empty-component'
 import { CreateLeaderboard } from '@/components/leaderboards/create-leaderboard'
 import { GameApiKeys } from '@/components/leaderboards/game-api-keys'
-import { GameInformation } from '@/components/leaderboards/game-information'
 import { LeaderboardCard } from '@/components/leaderboards/leaderboard-card'
+import { EditGameDialog } from '@/components/games/edit-game'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ContainerSpinner } from '@/components/ui/spinner'
+import { Badge } from '@/components/ui/badge'
 import { useGetGameKeys } from '@/hooks/use-api-key'
 import { useGetGames } from '@/hooks/use-games'
 import { useGetLeaderboards } from '@/hooks/use-leaderboards'
 
-export const Route = createFileRoute('/dashboard/games/$gameId')({
+export const Route = createFileRoute('/dashboard/games/$gameId/')({
   component: RouteComponent,
 })
 
@@ -24,7 +25,9 @@ function RouteComponent() {
     useGetLeaderboards()
   const { data: gameKeys, isPending: keysLoading } = useGetGameKeys(gameId)
 
-  if (gamesLoading || leaderboardsLoading || keysLoading) <ContainerSpinner />
+  if (gamesLoading || leaderboardsLoading || keysLoading) {
+    return <ContainerSpinner />
+  }
 
   const game = gamesData?.data.find((g) => g.id === gameId)
 
@@ -50,24 +53,40 @@ function RouteComponent() {
     0,
   )
 
+  const activeKeys = game.apiKeys.filter(key => key.status === 'enabled')
+
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex items-center gap-4">
+    <div className="flex flex-col gap-6 max-w-6xl">
+      {/* Header Section */}
+      <div className="flex items-start gap-4">
         <Link to="/dashboard/games">
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" className="mt-1">
             <ArrowLeft className="w-4 h-4" />
           </Button>
         </Link>
-        <div className="flex items-center gap-3 flex-1">
-          <span className="text-4xl">{game.icon}</span>
-          <div>
-            <h1 className="text-3xl font-bold">{game.name}</h1>
-            <p className="text-muted-foreground">{game.description}</p>
+        <div className="flex items-start gap-4 flex-1">
+          <span className="text-5xl">{game.icon}</span>
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-1">
+              <h1 className="text-2xl font-bold">{game.name}</h1>
+              <EditGameDialog game={game} />
+            </div>
+            <p className="text-sm text-muted-foreground mb-2">
+              {game.description}
+            </p>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Badge variant="secondary" className="text-xs">
+                ID: {game.id.slice(0, 8)}...
+              </Badge>
+              <span>•</span>
+              <span>Created {new Date(game.createdAt).toLocaleDateString()}</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* KPI Section */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
         <DashboardKpiElement
           title="Leaderboards"
           value={gameLeaderboards.length}
@@ -83,32 +102,38 @@ function RouteComponent() {
         />
         <DashboardKpiElement
           title="API Keys"
-          value={game.apiKeys.length || 0}
+          value={activeKeys.length}
+          icon={Key}
+          isPending={keysLoading}
+        />
+        <DashboardKpiElement
+          title="Total Keys"
+          value={game.apiKeys.length}
           icon={Gamepad2}
-          isPending={leaderboardsLoading}
+          isPending={keysLoading}
         />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <GameInformation gameName={game.name} gameId={game.id} />
-        {gameKeys ? (
-          <GameApiKeys gameKeys={gameKeys} isLoading={keysLoading} />
-        ) : null}
-      </div>
+      {/* API Keys Section */}
+      <GameApiKeys gameKeys={gameKeys} isLoading={keysLoading} />
 
+      {/* Leaderboards Section */}
       <Card>
-        <CardHeader>
+        <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-xl flex items-center gap-2">
-              <Trophy className="w-5 h-5" />
-              Leaderboards ({gameLeaderboards.length})
+            <CardTitle className="text-base flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              Leaderboards
+              <Badge variant="secondary" className="ml-1">
+                {gameLeaderboards.length}
+              </Badge>
             </CardTitle>
             <CreateLeaderboard preselectedGameId={gameId} />
           </div>
         </CardHeader>
         <CardContent>
           {gameLeaderboards.length > 0 ? (
-            <div className="grid grid-cols-1 gap-3">
+            <div className="grid grid-cols-1 gap-2">
               {gameLeaderboards.map((leaderboard, index) => {
                 const mockIcons = [
                   '🏆',

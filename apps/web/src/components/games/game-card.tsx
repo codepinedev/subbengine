@@ -13,7 +13,7 @@ export function GameCard({ game, leaderboardCount = 0 }: GameCardProps) {
 
   return (
     <Link
-      to={'/dashboard/games/$gameId'}
+      to={'/dashboard/game/$gameId/details'}
       params={{
         gameId: game.id,
       }}

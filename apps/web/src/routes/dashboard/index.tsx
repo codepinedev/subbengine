@@ -19,7 +19,7 @@ function RouteComponent() {
     undefined,
   )
   const { data, isPending } = useGetLeaderboards()
-  const {data:stats, isPending: statsPendning} = useGetApiKeyCallStats()
+  const {data:stats, isPending: statsPending} = useGetApiKeyCallStats()
 
   const filteredLeaderboards = selectedGameId
     ? data?.data.filter((lb) => lb.game.id === selectedGameId) || []
@@ -33,7 +33,6 @@ function RouteComponent() {
   return (
     <div className="flex flex-col gap-6">
       <WelcomeBasic />
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {isPending ? (
           <div className="col-span-3 flex justify-center">
@@ -44,6 +43,7 @@ function RouteComponent() {
             title={selectedGameId ? 'Game Leaderboards' : 'Active Leaderboards'}
             value={filteredLeaderboards.length}
             icon={Trophy}
+            isPending={isPending}
           />
         )}
         <DashboardKpiElement
@@ -51,8 +51,10 @@ function RouteComponent() {
           value={totalPlayers}
           iconColor="secondary"
           icon={Users}
+          isPending={isPending}
+
         />
-        <DashboardKpiElement title="API Calls Today" value={stats?.data.apiCallsToday.toString() ?? ''} icon={Zap} />
+        <DashboardKpiElement isPending={statsPending} title="API Calls Today" value={stats?.data.apiCallsToday.toString() ?? ''} icon={Zap} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <ListGames

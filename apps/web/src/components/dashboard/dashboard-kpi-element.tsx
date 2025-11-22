@@ -1,8 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import { Spinner } from '../ui/spinner'
+import { SkeletonCard } from '../skeleton-card'
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface DashboardKpiElementProps {
+  isPending:boolean
   title: string
   value: string | number
   icon: LucideIcon
@@ -11,12 +14,14 @@ interface DashboardKpiElementProps {
 }
 
 export function DashboardKpiElement({
+  isPending = true,
   title,
   value,
   icon: Icon,
   iconColor = 'text-primary',
   className,
 }: DashboardKpiElementProps): React.ReactElement {
+  if(isPending) return <SkeletonCard/>
   return (
     <Card className={cn(className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

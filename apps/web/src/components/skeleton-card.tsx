@@ -4,7 +4,7 @@ import { Spinner } from './ui/spinner'
 export function SkeletonCard() {
   return (
     <Card className="flex flex-col space-y-3">
-      <CardContent>
+      <CardContent className='flex justify-center'>
         <Spinner />
       </CardContent>
     </Card>

@@ -97,14 +97,21 @@ function RouteComponent() {
           title="Total Games"
           value={totalGames}
           icon={Gamepad2}
+          isPending={gamesLoading}
         />
         <DashboardKpiElement
           title="Leaderboards"
           value={totalLeaderboards}
           icon={Trophy}
           iconColor="secondary"
+          isPending={gamesLoading}
         />
-        <DashboardKpiElement title="API Keys" value={totalApiKeys} icon={Key} />
+        <DashboardKpiElement 
+          title="API Keys" 
+          value={totalApiKeys} 
+          icon={Key}  
+          isPending={gamesLoading}
+        />
       </div>
 
       <Card>

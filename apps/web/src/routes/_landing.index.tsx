@@ -28,7 +28,7 @@ function Home() {
                 required
                 className="flex-1"
               />
-              <Button type="submit">Join Waitlist</Button>
+              <Button type="submit">Join Wait List</Button>
             </div>
           </form>
         </div>

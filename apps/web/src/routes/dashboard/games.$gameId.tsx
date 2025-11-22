@@ -72,17 +72,20 @@ function RouteComponent() {
           title="Leaderboards"
           value={gameLeaderboards.length}
           icon={Trophy}
+          isPending={leaderboardsLoading}
         />
         <DashboardKpiElement
           title="Total Players"
           value={totalPlayers}
           icon={Users}
           iconColor="secondary"
+          isPending={leaderboardsLoading}
         />
         <DashboardKpiElement
           title="API Keys"
           value={game.apiKeys.length || 0}
           icon={Gamepad2}
+          isPending={leaderboardsLoading}
         />
       </div>
 

@@ -146,17 +146,20 @@ function RouteComponent() {
           title="Total API Keys"
           value={totalKeys}
           icon={Key}
+          isPending={keysLoading}
         />
         <DashboardKpiElement
           title="Active Keys"
           value={totalActive}
           icon={Shield}
           iconColor="secondary"
+          isPending={keysLoading}
         />
         <DashboardKpiElement
           title="Revoked Keys"
           value={totalRevoked}
           icon={AlertCircle}
+          isPending={keysLoading}
         />
       </div>
 

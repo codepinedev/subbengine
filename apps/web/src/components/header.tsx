@@ -22,9 +22,9 @@ export function Header() {
             {isPending ? (
               <div className="text-sm text-muted-foreground">Loading...</div>
             ) : data?.session ? (
-              <Link to="/dashboard">
+              <a href="/dashboard">
                 <Button variant="default">Go to Dashboard</Button>
-              </Link>
+              </a>
             ) : (
               <>
                 <Link to="/sign-in">

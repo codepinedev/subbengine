@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 import db from "@/infrastructure/database";
 import { games } from "@/infrastructure/database/schema";
@@ -27,6 +27,9 @@ export class GamesRepository implements Repository<Game, string> {
   }
 
   async create(data: Partial<Game>): Promise<Game> {
+    if (!data.userId)
+      throw new Error(`User not found.`);
+
     const [inserted] = await this.database
       .insert(games)
       .values({
@@ -36,20 +39,25 @@ export class GamesRepository implements Repository<Game, string> {
         userId: data.userId || "",
       })
       .returning();
+    if (!inserted)
+      throw new Error(`Failed to insert a new game`);
+
     return inserted;
   }
 
   async update(id: string, data: Partial<Game>): Promise<Game> {
+    if (!data.userId)
+      throw new Error(`User not found.`);
+
     const [updated] = await this.database
       .update(games)
-      .set({
-        icon: data.icon || "",
-        name: data.name || "",
-        description: data.description || "",
-        userId: data.userId || "",
-      })
-      .where(eq(games.id, id))
+      .set(data)
+      .where(and(eq(games.id, id), eq(games.userId, data.userId)))
       .returning();
+
+    if (!updated)
+      throw new Error("Failed to update a game");
+
     return updated;
   }
 

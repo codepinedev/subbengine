@@ -1,6 +1,7 @@
 import type { ApiKeyService } from "../apiKeys/api-key.service";
 import type { CacheService, QueueService } from "../shared/interfaces";
 import type { GamesRepository } from "./games.repository";
+import type { Game } from "./games.types";
 
 export class GameService {
   constructor(
@@ -10,13 +11,16 @@ export class GameService {
     private apiKeyService: ApiKeyService,
   ) { }
 
-  // TODO: Implement update player metadata for updating player information only
-  async updateGame(data: {
-    playerId: string;
-    username: string;
-    avatarUrl: string;
-  }) {
-    console.log(data);
+  async updateGame(id: string, data: Partial<Game>) {
+    try {
+      return await this.gameRepository.update(id, data);
+    }
+    catch (
+      error
+    ) {
+      console.log(error);
+      throw new Error("Failed to update game");
+    }
   }
 
   async createGame(data: {

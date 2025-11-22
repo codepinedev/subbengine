@@ -26,9 +26,7 @@ const allRoutes = [
 
 const sdkRoutes = [
   createLeaderboardRoutes(container.leaderboardController),
-  createHealthRoutes(container.healthController),
   createPlayerRoutes(container.playersController),
-  createApiKeyRoutes(container.apiKeyController),
 ];
 
 allRoutes.forEach((route) => {

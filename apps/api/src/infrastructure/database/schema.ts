@@ -12,7 +12,7 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema, createUpdateSchema } from "drizzle-zod";
 
 import { ApiKeyStatus, enumToPgEnum, LeaderboardStatus } from "@/lib/utils";
 
@@ -286,9 +286,7 @@ export const insertGamesSchema = createInsertSchema(games).omit({
   userId: true,
   id: true,
 });
-export const updateGamesSchema = createInsertSchema(games).omit({
-  createdAt: true,
-  updatedAt: true,
+export const updateGamesSchema = createUpdateSchema(games).omit({
   id: true,
 });
 

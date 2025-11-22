@@ -45,6 +45,10 @@ export class LeaderboardRepository implements Repository<Leaderboard, string> {
       .insert(leaderboards)
       .values(data)
       .returning();
+
+    if (!inserted)
+      throw new Error("Failed to insert a new leaderboard");
+
     return inserted;
   }
 
@@ -54,6 +58,10 @@ export class LeaderboardRepository implements Repository<Leaderboard, string> {
       .set({ ...data, updatedAt: new Date() })
       .where(eq(leaderboards.id, id))
       .returning();
+
+    if (!updated)
+      throw new Error("Failed to updated a leaderboard");
+
     return updated;
   }
 

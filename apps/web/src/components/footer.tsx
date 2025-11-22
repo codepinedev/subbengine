@@ -1,7 +1,5 @@
-import { useSocketContext } from '@/context/websocket-context'
 
 export function Footer() {
-  const { isConnected } = useSocketContext()
   const currentYear: number = new Date().getFullYear()
   const currentDate: string = new Date().toLocaleDateString('en-US', {
     month: 'long',
@@ -32,7 +30,6 @@ export function Footer() {
             </svg>
             GitHub
           </a>
-          {isConnected ? 'Connected' : 'Disconnected'}
         </div>
       </div>
     </footer>

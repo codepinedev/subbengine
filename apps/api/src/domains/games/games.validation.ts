@@ -6,6 +6,7 @@ import { z } from "zod";
 import {
   insertGamesSchema,
   selectGamesSchema,
+  updateGamesSchema,
 } from "@/infrastructure/database/schema";
 
 export const createGameRoute = createRoute({
@@ -25,6 +26,24 @@ export const createGameRoute = createRoute({
   },
 });
 
+export const updateGameRoute = createRoute({
+  tags: ["Games"],
+  method: "patch",
+  path: "/games/{id}",
+  request: {
+    params: z.object({
+      id: z.string(),
+    }),
+    body: jsonContentRequired(
+      updateGamesSchema,
+      "The game to update",
+    ),
+  },
+  responses: {
+    [HttpStatusCodes.OK]: jsonContent(selectGamesSchema, "Game updated"),
+  },
+});
+
 export const getAllGamesRoute = createRoute({
   tags: ["Games"],
   method: "get",
@@ -36,4 +55,5 @@ export const getAllGamesRoute = createRoute({
 
 // Export route types
 export type CreateGameRoute = typeof createGameRoute;
+export type UpdateGameRoute = typeof updateGameRoute;
 export type GetAllGamesRoute = typeof getAllGamesRoute;

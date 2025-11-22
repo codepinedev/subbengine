@@ -26,6 +26,7 @@ export class PlayerService {
   async createPlayer(data: InsertPlayerType) {
     const leaderboard = await this.leaderboardService.getLeaderboardById(
       data.leaderboardId ?? "",
+      data.userId,
     );
 
     if (!leaderboard) {

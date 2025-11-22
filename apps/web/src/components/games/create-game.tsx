@@ -4,6 +4,7 @@ import z from 'zod'
 
 import { Gamepad2, Key, Plus, Smile } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '../ui/button'
 import {
   EmojiPicker,
@@ -35,7 +36,7 @@ import {
 } from '@/components/ui/dialog'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-export function CreateGameForm(): ReactElement {
+export function CreateGameForm({ onSuccess }: { onSuccess?: () => void }): ReactElement {
   const { mutateAsync, isPending } = useCreateGame()
 
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
@@ -65,6 +66,8 @@ export function CreateGameForm(): ReactElement {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await mutateAsync(values)
+    toast.success('Game created successfully!')
+    onSuccess?.()
   }
 
   return (
@@ -236,8 +239,10 @@ export function CreateGame({
 }: {
   variant?: 'button' | 'icon'
 }): ReactElement {
+  const [open, setOpen] = useState(false)
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {variant === 'button' ? (
           <Button>
@@ -262,7 +267,7 @@ export function CreateGame({
             through the dashboard or SDK.
           </DialogDescription>
         </DialogHeader>
-        <CreateGameForm />
+        <CreateGameForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   )

@@ -3,6 +3,8 @@ import { Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import z from 'zod/v3'
 import type { ReactElement } from 'react'
+import { useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -26,7 +28,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { useCreatePlayer } from '@/hooks/use-players'
 import { Route } from '@/routes/dashboard/leaderboard/$leaderboardId.index'
 
-export function CreatePlayerForm(): ReactElement {
+export function CreatePlayerForm({ onSuccess }: { onSuccess?: () => void }): ReactElement {
   const { leaderboardId } = Route.useParams()
 
   const { mutateAsync, isPending } = useCreatePlayer(leaderboardId)
@@ -45,13 +47,16 @@ export function CreatePlayerForm(): ReactElement {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    if (leaderboardId)
-      mutateAsync({
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (leaderboardId) {
+      await mutateAsync({
         ...values,
         leaderboardId,
         rank: 0,
       })
+      toast.success('Player created successfully!')
+      onSuccess?.()
+    }
   }
 
   return (
@@ -100,8 +105,10 @@ export function CreatePlayerForm(): ReactElement {
 }
 
 export function CreatePlayer(): ReactElement {
+  const [open, setOpen] = useState(false)
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
           <Plus /> Create New Player
@@ -116,7 +123,7 @@ export function CreatePlayer(): ReactElement {
             your game!
           </DialogDescription>
         </DialogHeader>
-        <CreatePlayerForm />
+        <CreatePlayerForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   )

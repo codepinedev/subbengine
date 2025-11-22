@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { Gamepad2, Pencil, Smile } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '../ui/button'
 import {
   EmojiPicker,
@@ -63,6 +64,7 @@ export function EditGameDialog({ game }: EditGameDialogProps): ReactElement {
       gameId: game.id,
       game: values,
     })
+    toast.success('Game updated successfully!')
     setOpen(false)
   }
 

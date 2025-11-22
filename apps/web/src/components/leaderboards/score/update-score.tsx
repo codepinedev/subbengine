@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useContext, useEffect, useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import z from 'zod/v3'
+import { toast } from 'sonner'
 import type { UpdateScoreRequest } from '@/lib/types'
 import type { ReactElement } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -107,6 +108,7 @@ export function UpdateScoreForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await mutateAsync(constructPayload(values), {
       onSuccess: () => {
+        toast.success('Score updated successfully!')
         clearSelectedPlayers()
         setOpen(false)
       },

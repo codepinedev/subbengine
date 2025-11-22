@@ -1,9 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 
 import { Plus } from 'lucide-react'
+import { toast } from 'sonner'
 import { Button } from '../ui/button'
 import {
   Form,
@@ -37,10 +38,12 @@ import {
 
 interface CreateLeaderboardFormProps {
   preselectedGameId?: string
+  onSuccess?: () => void
 }
 
 export function CreateLeaderboardForm({
   preselectedGameId,
+  onSuccess,
 }: CreateLeaderboardFormProps): ReactElement {
   const { mutateAsync, isPending } = useCreateLeaderboard()
   const { data: games, isPending: gamesLoading } = useGetGames()
@@ -65,8 +68,10 @@ export function CreateLeaderboardForm({
     }
   }, [preselectedGameId, form])
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    mutateAsync(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await mutateAsync(values)
+    toast.success('Leaderboard created successfully!')
+    onSuccess?.()
   }
 
   return (
@@ -142,8 +147,10 @@ interface CreateLeaderboardProps {
 export function CreateLeaderboard({
   preselectedGameId,
 }: CreateLeaderboardProps): ReactElement {
+  const [open, setOpen] = useState(false)
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
           <Plus /> New Leaderboard
@@ -158,7 +165,10 @@ export function CreateLeaderboard({
             the dashboard or with the SDK.
           </DialogDescription>
         </DialogHeader>
-        <CreateLeaderboardForm preselectedGameId={preselectedGameId} />
+        <CreateLeaderboardForm
+          preselectedGameId={preselectedGameId}
+          onSuccess={() => setOpen(false)}
+        />
       </DialogContent>
     </Dialog>
   )

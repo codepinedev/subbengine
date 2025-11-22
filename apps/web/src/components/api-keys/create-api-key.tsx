@@ -3,6 +3,7 @@ import { Check, Copy, Key, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
+import { toast } from 'sonner'
 import { Button } from '../ui/button'
 import {
     Form,
@@ -78,6 +79,7 @@ export function CreateApiKeyForm({
     try {
       const response = await mutateAsync(values)
       setCreatedKey(response.data.key)
+      toast.success('API key created successfully!')
       form.reset()
     } catch (error) {
       console.error('Failed to create API key:', error)

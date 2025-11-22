@@ -5,12 +5,14 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from '../components/theme-provider'
 import { queryClient } from '@/api/query-client'
+import { Toaster } from '@/components/ui/sonner'
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="system" storageKey="app-theme">
           <Outlet />
+        <Toaster />
         <TanStackDevtools
           config={{
             position: 'bottom-right',

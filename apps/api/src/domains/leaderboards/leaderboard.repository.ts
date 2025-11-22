@@ -4,6 +4,7 @@ import db from "@/infrastructure/database";
 import { leaderboards, players } from "@/infrastructure/database/schema";
 import { LeaderboardStatus } from "@/lib/utils";
 
+import type { SelectPlayerType } from "../players";
 import type { Repository } from "../shared/interfaces";
 import type { Leaderboard, Player } from "./leaderboard.types";
 
@@ -84,7 +85,7 @@ export class LeaderboardRepository implements Repository<Leaderboard, string> {
     });
   }
 
-  async getPlayersWithDetails(playerIds: string[]): Promise<Player[]> {
+  async getPlayersWithDetails(playerIds: string[]): Promise<SelectPlayerType[]> {
     if (playerIds.length === 0) {
       return [];
     }
@@ -95,7 +96,7 @@ export class LeaderboardRepository implements Repository<Leaderboard, string> {
     });
   }
 
-  async getPlayerById(playerId: string): Promise<Player | null> {
+  async getPlayerById(playerId: string): Promise<SelectPlayerType | null> {
     const result = await this.database.query.players.findFirst({
       where: eq(players.id, playerId),
     });

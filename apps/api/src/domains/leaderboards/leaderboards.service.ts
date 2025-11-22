@@ -1,4 +1,5 @@
 import { HTTPException } from "hono/http-exception";
+import * as HttpStatusCodes from "stoker/http-status-codes";
 
 import type { SocketService } from "@/infrastructure";
 
@@ -25,7 +26,7 @@ export class LeaderboardService {
     request: SubmitScoreRequest,
   ): Promise<SubmitScoreResponse> {
     if (!leaderboardId) {
-      throw new HTTPException(400, {
+      throw new HTTPException(HttpStatusCodes.BAD_REQUEST, {
         message: "You forgot something important, the leaderboard ID.",
       });
     }
@@ -48,6 +49,7 @@ export class LeaderboardService {
       `lb:${leaderboardId}:scores`,
       playerId,
     );
+
     rank = (rank ?? -1) + 1;
 
     // Enqueue job for database persistence
@@ -68,7 +70,6 @@ export class LeaderboardService {
     options: GetTopPlayersOptions = {},
   ): Promise<LeaderboardRanking[]> {
     const { limit = 10 } = options;
-    console.log("TOP PLAYERS => ", leaderboardId);
 
     const redisResponse = await this.cacheService.zrevrange(
       `lb:${leaderboardId}:scores`,
@@ -77,13 +78,12 @@ export class LeaderboardService {
       true, // withScores
     );
 
-    console.log("REDIS RESPONSE => ", redisResponse);
     if (redisResponse.length > 0) {
       const rankings: LeaderboardRanking[] = [];
 
       for (let i = 0; i < redisResponse.length; i += 2) {
         rankings.push({
-          playerId: redisResponse[i],
+          playerId: redisResponse[i] ?? "",
           score: Number(redisResponse[i + 1]),
           rank: i / 2 + 1,
         });
@@ -91,9 +91,6 @@ export class LeaderboardService {
       return rankings;
     }
 
-    console.log(
-      `Redis cache empty for leaderboard ${leaderboardId}, rebuilding from database...`,
-    );
     return this.rebuildLeaderboardCache(leaderboardId, { limit });
   }
 
@@ -163,7 +160,7 @@ export class LeaderboardService {
     return rankings;
   }
 
-  // TODO: Remove player from a leaderboard with a playerid
+  // TODO: Remove player from a leaderboard with a player_id
   // Then remove his attachment to the leaderboard => leaderboardId = null
   async removePlayerFromLeaderboard() { }
 

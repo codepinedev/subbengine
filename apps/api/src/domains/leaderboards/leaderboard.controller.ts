@@ -1,3 +1,4 @@
+import { HTTPException } from "hono/http-exception";
 import * as HttpStatusCodes from "stoker/http-status-codes";
 
 import type { AppRouteHandler } from "../shared/types";
@@ -63,7 +64,7 @@ export class LeaderboardController {
     const user = c.get("session");
 
     if (!user)
-      throw new Error("User is not found???");
+      throw new HTTPException(HttpStatusCodes.NOT_FOUND);
 
     c.var.logger.info({ leaderboardData }, "Creating leaderboard");
     const leaderboard = await this.leaderboardService.createLeaderboard({
@@ -84,6 +85,29 @@ export class LeaderboardController {
       { leaderboardId, limit, offset, sort },
       "Getting top players",
     );
+
+    // Ownership validation
+    const userId = c.get("apiKey")?.userId || c.get("session")?.userId;
+
+    if (!userId) {
+      throw new HTTPException(HttpStatusCodes.UNAUTHORIZED, {
+        message: "Authentication required",
+      });
+    }
+
+    const leaderboard = await this.leaderboardService.getLeaderboardById(leaderboardId);
+
+    if (!leaderboard) {
+      throw new HTTPException(HttpStatusCodes.NOT_FOUND, {
+        message: "Leaderboard not found",
+      });
+    }
+
+    if (leaderboard.userId !== userId) {
+      throw new HTTPException(HttpStatusCodes.FORBIDDEN, {
+        message: "You don't have permission to access this leaderboard",
+      });
+    }
 
     const topRankings = await this.leaderboardService.getTopPlayers(
       leaderboardId,
@@ -113,6 +137,7 @@ export class LeaderboardController {
           rank: ranking.rank,
           avatarUrl: playerDetails.avatarUrl,
           leaderboardId: playerDetails.leaderboardId,
+          userId: playerDetails.userId,
           createdAt: playerDetails.createdAt?.toISOString() || null,
           updatedAt: playerDetails.updatedAt?.toISOString() || null,
         };
@@ -139,14 +164,13 @@ export class LeaderboardController {
     );
 
     if (!playerRanking) {
-      return c.json({ error: "Player not found" }, HttpStatusCodes.NOT_FOUND);
+      throw new HTTPException(HttpStatusCodes.NOT_ACCEPTABLE, { message: "Resource not found" });
     }
 
-    const playerDetails
-      = await this.leaderboardRepository.getPlayerById(playerId);
+    const playerDetails = await this.leaderboardRepository.getPlayerById(playerId);
 
     if (!playerDetails) {
-      return c.json({ error: "Player not found" }, HttpStatusCodes.NOT_FOUND);
+      throw new HTTPException(HttpStatusCodes.NOT_ACCEPTABLE, { message: "Resource not found" });
     }
 
     return c.json(
@@ -157,6 +181,7 @@ export class LeaderboardController {
         rank: playerRanking.rank,
         avatarUrl: playerDetails.avatarUrl,
         leaderboardId: playerDetails.leaderboardId,
+        userId: playerDetails.userId,
         createdAt: playerDetails.createdAt?.toISOString() || null,
         updatedAt: playerDetails.updatedAt?.toISOString() || null,
       },

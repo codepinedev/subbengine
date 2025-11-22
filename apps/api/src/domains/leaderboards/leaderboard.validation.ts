@@ -60,7 +60,7 @@ export const getPlayerRoute = createRoute({
   path: "/leaderboards/{leaderboardId}/players/{playerId}",
   responses: {
     [HttpStatusCodes.OK]: jsonContent(selectPlayersSchema, "Leaderboard Player"),
-    [HttpStatusCodes.NOT_FOUND]: jsonContent(z.object({ error: z.string() }), "Player not found"),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(z.object({ error: z.string() }), "Resource not found"),
   },
 });
 
@@ -75,6 +75,7 @@ const ParamsSchema = z.object({
       },
     }),
 });
+
 export const submitScoreRoute = createRoute({
   tags: ["Leaderboard"],
   method: "post",

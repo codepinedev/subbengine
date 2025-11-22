@@ -155,6 +155,9 @@ export const players = table("players", {
   score: bigint("score", { mode: "number" }).notNull(),
   rank: integer("rank").notNull(),
   avatarUrl: text("avatar_url"),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
   leaderboardId: uuid("leaderboard_id")
     .notNull()
     .references(() => leaderboards.id),
@@ -202,6 +205,10 @@ export const leaderboardsRelations = relations(
 );
 
 export const playersRelations = relations(players, ({ one, many }) => ({
+  createdBy: one(user, {
+    fields: [players.userId],
+    references: [user.id],
+  }),
   leaderboard: one(leaderboards, {
     fields: [players.leaderboardId],
     references: [leaderboards.id],
@@ -269,7 +276,8 @@ export const insertPlayersSchema = createInsertSchema(players).omit({
   updatedAt: true,
   id: true,
 });
-export const updatePlayersSchema = createInsertSchema(players).omit({
+
+export const updatePlayersSchema = createUpdateSchema(players).omit({
   createdAt: true,
   updatedAt: true,
   id: true,

@@ -141,6 +141,20 @@
       "when": 1763189174488,
       "tag": "0019_greedy_valeria_richards",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1763799785925,
+      "tag": "0020_first_monster_badoon",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1763799831275,
+      "tag": "0021_gray_komodo",
+      "breakpoints": true
     }
   ]
 }

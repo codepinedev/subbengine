@@ -1,10 +1,12 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
+import { HTTPException } from "hono/http-exception";
+import * as HttpStatusCodes from "stoker/http-status-codes";
 
 import db from "@/infrastructure/database";
 import { players } from "@/infrastructure/database/schema";
 
 import type { Repository } from "../shared/interfaces";
-import type { Player } from "./players.types";
+import type { InsertPlayerType, Player, UpdatePlayerType } from "./players.types";
 
 export class PlayersRepository implements Repository<Player, string> {
   constructor(private database = db) { }
@@ -20,26 +22,28 @@ export class PlayersRepository implements Repository<Player, string> {
     return this.database.query.players.findMany();
   }
 
-  async create(data: Partial<Player>): Promise<Player> {
+  async create(data: InsertPlayerType): Promise<Player> {
     const [inserted] = await this.database
       .insert(players)
-      .values({
-        username: data.username ?? "",
-        score: data.score ?? 0,
-        rank: data.rank ?? 0,
-        leaderboardId: data.leaderboardId ?? "",
-        avatarUrl: data.avatarUrl ?? "",
-      })
+      .values(data)
       .returning();
+
+    if (!inserted)
+      throw new HTTPException(HttpStatusCodes.BAD_REQUEST, { message: "Failed to insert resource" });
+
     return inserted;
   }
 
-  async update(id: string, data: Partial<Player>): Promise<Player> {
+  async update(id: string, data: UpdatePlayerType): Promise<Player> {
     const [updated] = await this.database
       .update(players)
       .set({ ...data, score: 0, rank: 0 })
-      .where(eq(players.id, id))
+      .where(and(eq(players.id, id), eq(players.userId, data.userId)))
       .returning();
+
+    if (!updated)
+      throw new HTTPException(HttpStatusCodes.BAD_REQUEST, { message: "Failed to update resource" });
+
     return updated;
   }
 

@@ -1,6 +1,11 @@
+import { HTTPException } from "hono/http-exception";
+import * as HttpStatusCodes from "stoker/http-status-codes";
+
+import type { Player } from "../leaderboards";
 import type { LeaderboardService } from "../leaderboards/leaderboards.service";
 import type { CacheService, QueueService } from "../shared/interfaces";
 import type { PlayersRepository } from "./players.repository";
+import type { InsertPlayerType, UpdatePlayerType } from "./players.types";
 
 export class PlayerService {
   constructor(
@@ -10,28 +15,24 @@ export class PlayerService {
     private queueService: QueueService,
   ) {}
 
-  // TODO: Implement update player metadata for updating player information only
-  async updatePlayerMetadata(data: {
-    playerId: string;
-    username: string;
-    avatarUrl: string;
-  }) {
-    console.log(data);
+  async updatePlayer(id: string, data: UpdatePlayerType) {
+    const player = await this.playerRepository.update(id, data);
+    return player;
   }
 
-  async createPlayer(data: any) {
+  async createPlayer(data: InsertPlayerType) {
     const leaderboard = await this.leaderboardService.getLeaderboardById(
-      data.leaderboardId,
+      data.leaderboardId ?? "",
     );
 
     if (!leaderboard) {
-      throw new Error("Leaderboard not found");
+      throw new HTTPException(HttpStatusCodes.NOT_FOUND);
     }
 
-    const registredPlayer = await this.playerRepository.create(data);
+    const registeredPlayer = await this.playerRepository.create(data);
 
     this.leaderboardService.submitScore(leaderboard.id.toString(), {
-      playerId: registredPlayer.id,
+      playerId: registeredPlayer.id,
       score: data.score,
       metadata: {
         username: data.username,
@@ -39,7 +40,7 @@ export class PlayerService {
       },
     });
 
-    return registredPlayer;
+    return registeredPlayer;
   }
 
   async getAllPlayers() {

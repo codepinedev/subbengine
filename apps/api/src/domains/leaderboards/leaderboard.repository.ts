@@ -1,4 +1,6 @@
 import { desc, eq, inArray, sql } from "drizzle-orm";
+import { HTTPException } from "hono/http-exception";
+import * as HttpStatusCodes from "stoker/http-status-codes";
 
 import db from "@/infrastructure/database";
 import { leaderboards, players } from "@/infrastructure/database/schema";
@@ -23,14 +25,7 @@ export class LeaderboardRepository implements Repository<Leaderboard, string> {
     return result || null;
   }
 
-  async findMany(userId?: string): Promise<Leaderboard[]> {
-    if (!userId) {
-      return this.database.query.leaderboards.findMany({
-        with: { createdBy: true },
-        where: (leaderboard, { eq }) =>
-          eq(leaderboard.status, LeaderboardStatus.ACTIVE),
-      });
-    }
+  async findMany(userId: string): Promise<Leaderboard[]> {
     return this.database.query.leaderboards.findMany({
       where: (leaderboard, { eq, and }) =>
         and(
@@ -96,11 +91,16 @@ export class LeaderboardRepository implements Repository<Leaderboard, string> {
     });
   }
 
-  async getPlayerById(playerId: string): Promise<SelectPlayerType | null> {
+  async getPlayerById(playerId: string): Promise<SelectPlayerType> {
     const result = await this.database.query.players.findFirst({
       where: eq(players.id, playerId),
     });
-    return result || null;
+
+    if (!result) {
+      throw new HTTPException(HttpStatusCodes.NOT_FOUND, { message: "Resource not found" });
+    }
+
+    return result;
   }
 
   async updatePlayerScore(

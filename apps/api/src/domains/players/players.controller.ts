@@ -34,7 +34,7 @@ export class PlayersController {
     const { id } = c.req.valid("param");
     const data = c.req.valid("json");
 
-    const player = await this.playerService.updatePlayer(id, { ...data, userId: session.userId as string });
+    const player = await this.playerService.updatePlayer(id, { ...data, userId: session.userId });
     return c.json(player, HttpStatusCodes.OK);
   };
 

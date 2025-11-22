@@ -38,7 +38,7 @@ export class PlayersRepository implements Repository<Player, string> {
     const [updated] = await this.database
       .update(players)
       .set({ ...data, score: 0, rank: 0 })
-      .where(and(eq(players.id, id), eq(players.userId, data.userId)))
+      .where(and(eq(players.id, id), eq(players.userId, data.userId as string)))
       .returning();
 
     if (!updated)

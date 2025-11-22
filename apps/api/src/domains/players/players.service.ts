@@ -16,6 +16,9 @@ export class PlayerService {
   ) {}
 
   async updatePlayer(id: string, data: UpdatePlayerType) {
+    if (!data.userId)
+      throw new HTTPException(HttpStatusCodes.UNAUTHORIZED);
+
     const player = await this.playerRepository.update(id, data);
     return player;
   }

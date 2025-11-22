@@ -24,9 +24,9 @@ export class LeaderboardController {
    * List all leaderboards for a user
    */
   list: AppRouteHandler<ListLeaderboardsRoute> = async (c) => {
-    c.var.logger.info("Listing leaderboards");
-
     const userId = c.get("apiKey")?.userId || c.get("session")?.userId;
+
+    c.var.logger.info("Listing leaderboards");
 
     const leaderboards
       = await this.leaderboardService.getAllLeaderboards(userId);
@@ -39,20 +39,13 @@ export class LeaderboardController {
    */
   get: AppRouteHandler<GetLeaderboardRoute> = async (c) => {
     const leaderboardId = c.req.param("leaderboardId");
+    const userId = c.get("apiKey")?.userId || c.get("session")?.userId;
+
     c.var.logger.info({ leaderboardId }, "Getting leaderboard");
 
-    // TODO: Needs to implement userId verification on Get Single Leaderboard like the one in the list leaderboards
-    // const userId = c.get("apiKey")?.userId || c.get("session")?.userId;
-
     const leaderboard
-      = await this.leaderboardService.getLeaderboardById(leaderboardId);
+      = await this.leaderboardService.getLeaderboardById(leaderboardId, userId);
 
-    if (!leaderboard) {
-      return c.json(
-        { error: "Leaderboard not found" },
-        HttpStatusCodes.NOT_FOUND,
-      );
-    }
     return c.json(leaderboard, HttpStatusCodes.OK);
   };
 
@@ -78,7 +71,8 @@ export class LeaderboardController {
    * Get the top players for a leaderboard
    */
   topPlayers: AppRouteHandler<GetTopPlayersRoute> = async (c) => {
-    const leaderboardId = c.req.param("leaderboardId");
+    const userId = c.get("apiKey")?.userId || c.get("session")?.userId;
+    const { leaderboardId } = c.req.valid("param");
     const { limit, offset, sort } = c.req.valid("query");
 
     c.var.logger.info(
@@ -86,28 +80,7 @@ export class LeaderboardController {
       "Getting top players",
     );
 
-    // Ownership validation
-    const userId = c.get("apiKey")?.userId || c.get("session")?.userId;
-
-    if (!userId) {
-      throw new HTTPException(HttpStatusCodes.UNAUTHORIZED, {
-        message: "Authentication required",
-      });
-    }
-
-    const leaderboard = await this.leaderboardService.getLeaderboardById(leaderboardId);
-
-    if (!leaderboard) {
-      throw new HTTPException(HttpStatusCodes.NOT_FOUND, {
-        message: "Leaderboard not found",
-      });
-    }
-
-    if (leaderboard.userId !== userId) {
-      throw new HTTPException(HttpStatusCodes.FORBIDDEN, {
-        message: "You don't have permission to access this leaderboard",
-      });
-    }
+    await this.leaderboardService.getLeaderboardById(leaderboardId, userId);
 
     const topRankings = await this.leaderboardService.getTopPlayers(
       leaderboardId,
@@ -163,15 +136,9 @@ export class LeaderboardController {
       playerId,
     );
 
-    if (!playerRanking) {
-      throw new HTTPException(HttpStatusCodes.NOT_ACCEPTABLE, { message: "Resource not found" });
-    }
-
     const playerDetails = await this.leaderboardRepository.getPlayerById(playerId);
 
-    if (!playerDetails) {
-      throw new HTTPException(HttpStatusCodes.NOT_ACCEPTABLE, { message: "Resource not found" });
-    }
+
 
     return c.json(
       {

@@ -97,14 +97,14 @@ export class LeaderboardService {
   async getPlayerRank(
     leaderboardId: string,
     playerId: string,
-  ): Promise<LeaderboardRanking | null> {
+  ): Promise<LeaderboardRanking> {
     const rank = await this.cacheService.zrevrank(
       `lb:${leaderboardId}:scores`,
       playerId,
     );
 
     if (rank === null) {
-      return null;
+      throw new HTTPException(HttpStatusCodes.NOT_FOUND, { message: "Resource not found" });
     }
 
     // Get the score for this player
@@ -116,7 +116,7 @@ export class LeaderboardService {
     );
 
     if (scores.length === 0) {
-      return null;
+      throw new HTTPException(HttpStatusCodes.NOT_FOUND, { message: "Resource not found" });
     }
 
     return {
@@ -165,28 +165,52 @@ export class LeaderboardService {
   async removePlayerFromLeaderboard() { }
 
   async getAllLeaderboards(userId?: string): Promise<LeaderboardWithCount[]> {
+    if (!userId) {
+      throw new HTTPException(HttpStatusCodes.UNAUTHORIZED, {
+        message: "Authentication required",
+      });
+    }
+
     const leaderboards = await this.leaderboardRepository.findMany(userId);
 
     if (leaderboards.length === 0) {
       return [];
     }
 
-    // Get player counts for all leaderboards
     const leaderboardIds = leaderboards.map(lb => lb.id);
     const playerCounts
       = await this.leaderboardRepository.getPlayerCountsByLeaderboardIds(
         leaderboardIds,
       );
 
-    // Attach player counts to each leaderboard
     return leaderboards.map(lb => ({
       ...lb,
       playerCount: playerCounts.get(lb.id) || 0,
     }));
   }
 
-  async getLeaderboardById(id: string) {
-    return this.leaderboardRepository.findById(id);
+  async getLeaderboardById(id: string, userId?: string) {
+    if (!userId) {
+      throw new HTTPException(HttpStatusCodes.UNAUTHORIZED, {
+        message: "Authentication required",
+      });
+    }
+
+    const leaderboard = await this.leaderboardRepository.findById(id);
+
+    if (!leaderboard) {
+      throw new HTTPException(HttpStatusCodes.NOT_FOUND, {
+        message: "Leaderboard not found",
+      });
+    }
+
+    if (leaderboard.userId !== userId) {
+      throw new HTTPException(HttpStatusCodes.FORBIDDEN, {
+        message: "You don't have permission to access this leaderboard",
+      });
+    }
+
+    return leaderboard;
   }
 
   async createLeaderboard(data: any) {

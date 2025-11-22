@@ -43,6 +43,9 @@ export const getTopPlayersRoute = createRoute({
   method: "get",
   path: "/leaderboards/{leaderboardId}/players",
   request: {
+    params: z.object({
+      leaderboardId: z.string(),
+    }),
     query: z.object({
       limit: z.coerce.number().optional(),
       offset: z.coerce.number().optional(),

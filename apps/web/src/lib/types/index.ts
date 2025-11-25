@@ -1,7 +1,7 @@
 import { ApiKeyStatus } from './api-key.types'
 import { LeaderboardStatus } from './leaderboard.types'
 import type { ApiKey } from './api-key.types'
-import type { Game, GameToCreate } from './game.types'
+import type { Game, GameToCreate, GameToUpdate } from './game.types'
 import type {
   Leaderboard,
   LeaderboardCreated,
@@ -19,6 +19,7 @@ export {
   type ApiKey,
   type Game,
   type GameToCreate,
+  type GameToUpdate,
   type Leaderboard,
   type LeaderboardCreated,
   type LeaderboardPlayer,

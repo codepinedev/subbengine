@@ -25,7 +25,10 @@ export const useGetApiKeyCallStats = () => {
 export const useGetApiKeyLogs = (id: string) => {
   const { data, isPending, error } = useQuery({
     queryKey: ['getApiKeyLogs', id],
-    queryFn: async () => id && (await getApiKeyLogsEndpoint(id)),
+    queryFn: async () => {
+      if (!id) return undefined
+      return await getApiKeyLogsEndpoint(id)
+    },
   })
 
   return {
@@ -38,7 +41,10 @@ export const useGetApiKeyLogs = (id: string) => {
 export const useGetGameKeys = (gameId: string) => {
   const { data, isPending, error } = useQuery({
     queryKey: ['getGameKeys', gameId],
-    queryFn: async () => gameId && (await getGameKeysEndpoint(gameId)),
+    queryFn: async () => {
+      if (!gameId) return undefined
+      return await getGameKeysEndpoint(gameId)
+    },
   })
 
   return {

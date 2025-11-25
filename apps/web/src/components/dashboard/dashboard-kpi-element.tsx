@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import { Spinner } from '../ui/spinner'
 import { SkeletonCard } from '../skeleton-card'
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
